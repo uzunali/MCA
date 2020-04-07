@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -25,7 +26,7 @@ class Post(models.Model):
     #content = HTMLField()
 
     comment_count = models.IntegerField(default = 0)
-    # view_count = models.IntegerField(default = 0)
+    view_count = models.IntegerField(default = 0)
     auther = models.ForeignKey(Author, on_delete=models.CASCADE) 
     thumbnail = models.ImageField()
     categories = models.ManyToManyField(Category)
@@ -34,3 +35,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self, id):
+        return reverse('post-details', kwargs={
+            'id':self.id
+        })
